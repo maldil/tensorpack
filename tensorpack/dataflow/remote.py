@@ -6,6 +6,7 @@ import multiprocessing as mp
 import time
 from collections import deque
 import tqdm
+import numpy as np
 
 from ..utils import logger
 from ..utils.concurrency import DIE
@@ -74,7 +75,7 @@ def send_dataflow_zmq(df, addr, hwm=50, format=None, bind=False):
                     q.append(time.time() - start)
                     pbar.update(1)
                     if pbar.n % INTERVAL == 0:
-                        avg = "{:.3f}".format(sum(q) / len(q))
+                        avg = "{:.3f}".format(np.mean(q))
                         pbar.set_postfix({'AvgSendLat': avg})
     finally:
         logger.info("Exiting send_dataflow_zmq ...")
